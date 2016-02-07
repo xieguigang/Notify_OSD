@@ -28,7 +28,7 @@
     ''' The displaying behavior of the osd bubble on the screen.
     ''' </summary>
     ''' <returns></returns>
-    <Xml.Serialization.XmlElement> Public Property BubbleBehavior As BubbleBehaviorTypes
+    <Xml.Serialization.XmlElement> Public Property BubbleBehavior As BubbleBehaviors
 
     Public ReadOnly Property Icon As Image
         Get
@@ -38,9 +38,7 @@
                 Try
                     Return LoadImage(_IconURL)
                 Catch ex As Exception
-                    Call Console.WriteLine(ex.ToString)
-                    Call Debug.WriteLine(ex.ToString)
-                    Call Trace.WriteLine(ex.ToString)
+                    Call New Exception(IconURL, ex).PrintException
                     Return My.Resources.UBUNTU
                 End Try
             End If

@@ -1,4 +1,5 @@
 ﻿Imports System.Text
+Imports Microsoft.VisualBasic.Serialization
 
 Module MessageRender
 
@@ -37,53 +38,48 @@ Module MessageRender
     ''' <param name="MSG"></param>
     ''' <returns></returns>
     ''' <remarks>函数依靠字符串中含有多少个回车符来判断绘制的位置</remarks>
-    Public Function DrawMessage(MSG As Message, Renderer As MessageRender) As Image
+    Public Function DrawMessage(MSG As Message, Renderer As RenderParameters) As Image
         Try
-            Dim s_Title As String = If(String.IsNullOrEmpty(MSG.Title), Now.ToString, MSG.Title.Replace("\n", vbCrLf)),
-                strMessage As String = If(String.IsNullOrEmpty(MSG.Message), "", MSG.Message.Replace("\n", vbCrLf))
-
-            Dim StringMeasurements = Graphics.FromImage(My.Resources.UBUNTU)
-            Dim TitleSize = StringMeasurements.MeasureString(s_Title, Renderer.TitleFont)
-            Dim MessageSize = StringMeasurements.MeasureString(strMessage, Renderer.MessageFont)
-            Dim Margins As Size = New Size(15, 5)
-            Dim GraphicSize As Point = New Point With {
-                .X = System.Math.Max(TitleSize.Width, MessageSize.Width) + Renderer.IconSize + Margins.Width * 3,
-                .Y = Margins.Height * 2 + 5 + TitleSize.Height + MessageSize.Height + 25}
-
-            If GraphicSize.Y < 80 Then
-                GraphicSize.Y = 80
-            End If
-
-            Dim ImageValue As Bitmap = New Bitmap(GraphicSize.X, GraphicSize.Y + Renderer.YDelta)
-            Using GraphicDevice As Graphics = Graphics.FromImage(ImageValue)
-
-                GraphicDevice.CompositingQuality = Drawing2D.CompositingQuality.HighQuality
-
-                '绘制表面纹理
-                Call GraphicDevice.FillRegion(Brushes.Black, New Region(New Rectangle(New Point, GraphicSize)))
-                '绘制消息内容
-                GraphicDevice.DrawImage(MSG.Icon, 15, 15, Renderer.IconSize, Renderer.IconSize)
-                GraphicDevice.DrawString(s_Title, Renderer.TitleFont, Brushes.WhiteSmoke, New Point(78, 15))
-                GraphicDevice.DrawString(strMessage, Renderer.MessageFont, Brushes.White, New Point(78, 5 + 15 + TitleSize.Height))
-
-                Return ImageValue
-            End Using
+            Return __drawInner(MSG, Renderer)
         Catch ex As Exception
-            FileIO.FileSystem.WriteAllText(My.Application.Info.DirectoryPath & "/notify_osd.log",
-                                           Now.ToString & vbCrLf &
-                                           "------------------------------------------------------------------------------------------" & vbCrLf &
-                                           ex.ToString & vbCrLf, append:=True)
+            ex = New Exception("[Message] " & MSG.GetJson, ex)
+            ex = New Exception("[Parameters] " & Renderer.GetJson, ex)
+
+            Dim exMsg As String = App.BugsFormatter(ex)
+            Call FileIO.FileSystem.WriteAllText(App.HOME & "/notify-osd.log", exMsg & vbCrLf, append:=True)
+
             Return Nothing
         End Try
     End Function
 
-    ''' <summary>
-    ''' 假若使用默认的配置数据直接使用构造函数就可以了
-    ''' </summary>
-    Public Class MessageRender
-        Public Property TitleFont As Font = New Font(FONT_FAMILY_MICROSOFT_YAHEI, 9, FontStyle.Bold)
-        Public Property YDelta As Integer = 0
-        Public Property MessageFont As Font = New Font(FONT_FAMILY_MICROSOFT_YAHEI, 8)
-        Public Property IconSize As Integer = 48
-    End Class
+    ReadOnly _textMeasures As Graphics = Graphics.FromImage(My.Resources.UBUNTU)
+
+    Private Function __drawInner(msg As Message, params As RenderParameters) As Image
+        Dim title As String = If(String.IsNullOrEmpty(msg.Title), Now.ToString, msg.Title.Replace("\n", vbCrLf)),
+            message As String = If(String.IsNullOrEmpty(msg.Message), "", msg.Message.Replace("\n", vbCrLf))
+        Dim titleSize As SizeF = _textMeasures.MeasureString(title, params.TitleFont)
+        Dim msgSize As SizeF = _textMeasures.MeasureString(message, params.MessageFont)
+        Dim margins As Size = New Size(15, 5)
+        Dim grSize As Point = New Point With {
+            .X = Math.Max(titleSize.Width, msgSize.Width) + params.IconSize + margins.Width * 3,
+            .Y = margins.Height * 2 + 5 + titleSize.Height + msgSize.Height + 25
+        }
+
+        If grSize.Y < 80 Then
+            grSize.Y = 80
+        End If
+
+        Dim res As Bitmap = New Bitmap(grSize.X, grSize.Y + params.YDelta)
+        Using grDraw As Graphics = Graphics.FromImage(res)
+            grDraw.CompositingQuality = Drawing2D.CompositingQuality.HighQuality
+            '绘制表面纹理
+            Call grDraw.FillRegion(Brushes.Black, New Region(New Rectangle(New Point, grSize)))
+            '绘制消息内容
+            grDraw.DrawImage(msg.Icon, 15, 15, params.IconSize, params.IconSize)
+            grDraw.DrawString(title, params.TitleFont, Brushes.WhiteSmoke, New Point(78, 15))
+            grDraw.DrawString(message, params.MessageFont, Brushes.White, New Point(78, 5 + 15 + titleSize.Height))
+
+            Return res
+        End Using
+    End Function
 End Module

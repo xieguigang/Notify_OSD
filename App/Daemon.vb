@@ -2,6 +2,7 @@
 Imports System.Text.Encoding
 Imports Microsoft.VisualBasic.MMFProtocol
 Imports Microsoft.VisualBasic.CommandLine
+Imports NotifyOsd.Framework.Balloon
 
 ''' <summary>
 ''' Daemon module of the notification services.(这个是主进程)
@@ -12,7 +13,7 @@ Module DaemonProcess
     Dim _controller As Interpreter = New Interpreter(GetType(DaemonProcess))
     Dim _osdNotifier As OsdNotifier = New OsdNotifier
 
-    Dim WithEvents NotifyOsdService As MMFSocket
+    Dim WithEvents _serviceSocket As MMFSocket
 
     Public ReadOnly Property Manual As String
         Get
@@ -21,7 +22,7 @@ Module DaemonProcess
     End Property
 
     Public Sub SendMessage(msg As Message)
-        Call DaemonProcess._osdNotifier.SendMessage(msg)
+        Call _osdNotifier.SendMessage(msg)
     End Sub
 
     <ExportAPI("-Stop")>
@@ -61,12 +62,11 @@ Module DaemonProcess
     Public Sub Start(ServiceId As String)
         Dim Cycle As Integer = 0
 
-        DaemonProcess.NotifyOsdService = New MMFSocket(ServiceId, AddressOf __display)
+        DaemonProcess._serviceSocket = New MMFSocket(ServiceId, AddressOf __display)
 
         Call $"Notify-OSD services start!".__DEBUG_ECHO
 
         Do While _continuesThread
-
             Call Threading.Thread.Sleep(100)
 
             If Cycle > 10 * 60 * 2 Then
@@ -77,6 +77,6 @@ Module DaemonProcess
             End If
         Loop
 
-        Call DaemonProcess.NotifyOsdService.Free
+        Call DaemonProcess._serviceSocket.Free
     End Sub
 End Module

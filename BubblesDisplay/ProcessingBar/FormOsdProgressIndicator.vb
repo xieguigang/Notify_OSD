@@ -1,9 +1,11 @@
 ﻿Imports NotifyOsd
+Imports NotifyOsd.BubblesDisplay
+Imports NotifyOsd.Framework.Balloon
 
 ''' <summary>
 ''' 消息气泡会一直停留在桌面直到用户取消或者走到100
 ''' </summary>
-Friend Class FormOsdProcessIndicator : Implements System.IDisposable
+Friend Class FormOsdProgressIndicator : Implements System.IDisposable
 
     Public Property ProcessingBar As ProcessingBar
 
@@ -23,8 +25,7 @@ Friend Class FormOsdProcessIndicator : Implements System.IDisposable
             If value >= 100 Then
                 value = 100
                 '进度条已经走完了，则让气泡消失
-                Me._OSD_MSG.BubbleBehavior = BubbleBehaviorTypes.AutoClose
-
+                Me._msg.BubbleBehavior = BubbleBehaviors.AutoClose
             Else
                 Me._ProcessingBar.PercentageValue = value
             End If
@@ -60,12 +61,12 @@ Friend Class FormOsdProcessIndicator : Implements System.IDisposable
     Public Sub Cancel()
         Value = 100
         Call Me._ProcessingBar.StopRollAnimation()
-        Call Me.InvokeStartFadeOut()
+        Call Me.__startFadeOut()
     End Sub
 
-    Protected Overrides Sub AfterMessageDrawing()
+    Protected Overrides Sub __afterDrawing()
         Me._resWidth = Me._resNormal.Width
-        Me._OSD_MSG.BubbleBehavior = BubbleBehaviorTypes.ProcessIndicator
+        Me._msg.BubbleBehavior = BubbleBehaviors.ProgressIndicator
         Me._ProcessingBar.StartRollAnimation()
     End Sub
 
@@ -109,11 +110,11 @@ Friend Class FormOsdProcessIndicator : Implements System.IDisposable
 
     Dim _ProcNormalRenderer As Image, _procBlurRenderer As Image
 
-    Protected Overrides Function InvokeSetNormal() As Image
+    Protected Overrides Function __setNormal() As Image
         Return Me._ProcNormalRenderer
     End Function
 
-    Protected Overrides Function InvokeSetBlur() As Image
+    Protected Overrides Function __setBlur() As Image
         Return Me._procBlurRenderer
     End Function
 
@@ -135,11 +136,13 @@ Friend Class FormOsdProcessIndicator : Implements System.IDisposable
     End Sub
 #End Region
 
-    Protected Overrides Function GetRenderer() As MessageRender.MessageRender
-        Return New MessageRender.MessageRender With {.YDelta = Me._ProcessingBar.Height + 15}
+    Protected Overrides Function __getParams() As RenderParameters
+        Return New RenderParameters With {
+            .YDelta = Me._ProcessingBar.Height + 15
+        }
     End Function
 
-    Protected Overrides Sub AfterCleanUp()
+    Protected Overrides Sub __afterCleanUp()
         Call Me._ProcessingBar.Dispose()
     End Sub
 End Class

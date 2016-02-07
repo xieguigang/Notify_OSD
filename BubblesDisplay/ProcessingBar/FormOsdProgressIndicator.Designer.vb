@@ -1,6 +1,6 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class FormOsdValueAdjustments
-    Inherits FormOsdProcessIndicator
+Partial Class FormOsdProgressIndicator
+    Inherits FormOsdNotify
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()> _

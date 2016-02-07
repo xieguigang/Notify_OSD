@@ -1,4 +1,4 @@
-﻿Friend Class FormOsdValueAdjustments
+﻿Friend Class FormOsdValueAdjuster
 
     Dim Up As ValueAdjustmentInvoke, Down As ValueAdjustmentInvoke, ValueChanged As ValueAdjustmentInvoke
 
@@ -39,16 +39,16 @@
     End Sub
 #End Region
 
-    Protected Overrides Sub AfterMessageDrawing()
+    Protected Overrides Sub __afterDrawing()
         Me._resWidth = Me._resNormal.Width
-        Me._OSD_MSG.BubbleBehavior = BubbleBehaviorTypes.ValueAdjustments
+        Me._msg.BubbleBehavior = BubbleBehaviors.ValueAdjustments
         Me.ProcessingBar.StopRollAnimation()
         Me.ProcessingBar.InvokeAnimation()
     End Sub
 
     Protected Overrides Sub BubbleMouseWheel(sender As Object, e As MouseEventArgs)
 
-        Me._UnloadCount = 0
+        Me._unloadCount = 0
 
         Call Me.Increase(e.Delta / 100)
 
@@ -73,11 +73,11 @@
 
     Protected Overrides Sub MouseMoveEnterBlur(sender As Object, e As EventArgs)
         _Blur = True
-        If _StartFadeOut Then Return
-        PictureBox1.BackgroundImage = InvokeSetBlur()
-        _BubbleFadeAnimationInvoker.Interval = 5
-        _BubbleFadeAnimationInvoker.Enabled = True
-        _TimerUnloadCount.Enabled = False
+        If _startFadeOut Then Return
+        PictureBox1.BackgroundImage = __setBlur()
+        _animationInvoker.Interval = 5
+        _animationInvoker.Enabled = True
+        _timerUnloadCount.Enabled = False
     End Sub
 
 End Class

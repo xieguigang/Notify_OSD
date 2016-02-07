@@ -22,6 +22,6 @@ Public Module Program
     ''' </summary>
     ''' <param name="uri"></param>
     Public Sub Run(uri As String)
-        Call Microsoft.VisualBasic.Parallel.RunTask(Sub() Call CLI.StartServices($"-start {uri}"))
+        Call RunTask(Sub() Call CLI.StartServices($"-start {uri}"))
     End Sub
 End Module

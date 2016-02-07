@@ -1,4 +1,4 @@
-﻿Public Enum BubbleBehaviorTypes
+﻿Public Enum BubbleBehaviors
     ''' <summary>
     ''' The message bubble will be closed automatically after a time period.
     ''' </summary>
@@ -10,7 +10,7 @@
     ''' <summary>
     ''' The message bubble will running as a process bar indicator, the bubble will automatically closed when the process value is 100.
     ''' </summary>
-    ProcessIndicator
+    ProgressIndicator
     ''' <summary>
     ''' When the user scrolling his mouse wheel on the bubble, then the action will be callback to adjust the value.
     ''' </summary>
