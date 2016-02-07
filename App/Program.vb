@@ -24,6 +24,4 @@ Public Module Program
     Public Sub Run(uri As String)
         Call Microsoft.VisualBasic.Parallel.Run(Sub() Call CLI.StartServices($"-start {uri}"))
     End Sub
-
-    Public Property ProcessLock As MMFProtocol.ProcessLock
 End Module

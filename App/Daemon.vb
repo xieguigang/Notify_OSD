@@ -1,6 +1,7 @@
 ﻿Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports System.Text.Encoding
 Imports Microsoft.VisualBasic.MMFProtocol
+Imports Microsoft.VisualBasic.CommandLine
 
 ''' <summary>
 ''' Daemon module of the notification services.(这个是主进程)
@@ -8,15 +9,14 @@ Imports Microsoft.VisualBasic.MMFProtocol
 Module DaemonProcess
 
     Dim _continuesThread As Boolean = True
-    Dim _notifyOsdController As Microsoft.VisualBasic.CommandLine.Interpreter =
-        New CommandLine.Interpreter(GetType(DaemonProcess))
+    Dim _controller As Interpreter = New Interpreter(GetType(DaemonProcess))
     Dim _osdNotifier As OsdNotifier = New OsdNotifier
 
-    Dim WithEvents NotifyOsdService As Microsoft.VisualBasic.MMFProtocol.MMFSocket
+    Dim WithEvents NotifyOsdService As MMFSocket
 
     Public ReadOnly Property Manual As String
         Get
-            Return DaemonProcess._notifyOsdController.SDKdocs
+            Return DaemonProcess._controller.SDKdocs
         End Get
     End Property
 
@@ -31,7 +31,7 @@ Module DaemonProcess
     End Function
 
     <ExportAPI("-SendMessage", Usage:="-SendMessage -title <title> -message <message> -icon <icon_url>")>
-    Public Function SendMessage(args As CommandLine.CommandLine) As Integer
+    Public Function SendMessage(args As CommandLine) As Integer
         If args Is Nothing Then
             Return -1
         Else
@@ -55,7 +55,7 @@ Module DaemonProcess
     End Function
 
     Private Sub __display(data As Byte())
-        Call _notifyOsdController.Execute(Unicode.GetString(data))
+        Call _controller.Execute(Unicode.GetString(data))
     End Sub
 
     Public Sub Start(ServiceId As String)
