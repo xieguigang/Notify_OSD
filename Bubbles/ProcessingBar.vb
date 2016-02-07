@@ -28,7 +28,7 @@
     ''' 0 - 1000, default is 990
     ''' </summary>
     ''' <returns></returns>
-    Public Property ProcBarAnimationSpeed As Integer
+    Public Property AnimationSpeed As Integer
         Get
             Return 1000 - _interval
         End Get
@@ -41,7 +41,7 @@
     Dim _getWidth As Func(Of Integer)
 
     Sub New(InvokeUpdate As ProcessingBar.InvokeUpdateProcBar, getWidth As Func(Of Integer))
-        ProcBarAnimationSpeed = 990
+        AnimationSpeed = 990
         Me._getWidth = getWidth
         Me._ProcAnimationInvokeUpdate = InvokeUpdate
     End Sub

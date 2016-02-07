@@ -101,6 +101,8 @@
       <DependentUpon>ProcessingBar.vb</DependentUpon>
     </Compile>
     <Compile Include="Bubbles\ProcessingBar.vb" />
+    <Compile Include="Framework\Balloon\ValueAdjustments.vb" />
+    <Compile Include="Framework\Balloon\ProcessBarBubble.vb" />
     <Compile Include="Framework\Components\BubbleBehaviorTypes.vb" />
     <Compile Include="Framework\Components\Message.vb" />
     <Compile Include="Framework\Services.vb" />
