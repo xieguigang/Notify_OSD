@@ -51,10 +51,15 @@ Namespace Framework.Balloon
 
         Dim _procBubble As FormOsdProgressIndicator
 
-        Sub New(MSG As Message, ScreenOffset As Point)
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="msg"></param>
+        ''' <param name="screenOffset">气泡在屏幕上面的偏移的位置</param>
+        Sub New(msg As Message, screenOffset As Point)
             Me._procBubble = New FormOsdProgressIndicator()
-            Me._procBubble.ScreenOffSet = ScreenOffset
-            Me._procBubble.Message = MSG
+            Me._procBubble.ScreenOffSet = screenOffset
+            Me._procBubble.Message = msg
         End Sub
     End Class
 End Namespace

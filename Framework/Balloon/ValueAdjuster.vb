@@ -34,17 +34,22 @@ Namespace Framework.Balloon
 
 #Region "Constructors"
 
-        Sub New(msg As Message, Up As ValueAdjustmentInvoke, Down As ValueAdjustmentInvoke, valueChanged As ValueAdjustmentInvoke)
+        Sub New(msg As Message, Up As AdjustInvoke, Down As AdjustInvoke, valueChanged As AdjustInvoke)
             Me._adjustBar = New FormOsdValueAdjuster(Up, Down, valueChanged)
             Me._adjustBar.Message = msg
         End Sub
 
-        Sub New(MSG As Message, Up As ValueAdjustmentInvoke, Down As ValueAdjustmentInvoke)
+        Sub New(MSG As Message, Up As AdjustInvoke, Down As AdjustInvoke)
             Me._adjustBar = New FormOsdValueAdjuster(Up, Down)
             Me._adjustBar.Message = MSG
         End Sub
 
-        Sub New(MSG As Message, ValueChanged As ValueAdjustmentInvoke)
+        ''' <summary>
+        ''' Public Delegate Sub AdjustInvoke(value As Integer)
+        ''' </summary>
+        ''' <param name="MSG"></param>
+        ''' <param name="ValueChanged">Public Delegate Sub AdjustInvoke(value As Integer)</param>
+        Sub New(MSG As Message, ValueChanged As AdjustInvoke)
             Me._adjustBar = New FormOsdValueAdjuster(ValueChanged)
             Me._adjustBar.Message = MSG
         End Sub

@@ -1,10 +1,10 @@
 ﻿Friend Class FormOsdValueAdjuster
 
-    Dim Up As ValueAdjustmentInvoke, Down As ValueAdjustmentInvoke, ValueChanged As ValueAdjustmentInvoke
+    Dim Up As AdjustInvoke, Down As AdjustInvoke, ValueChanged As AdjustInvoke
 
 #Region "Constructors"
 
-    Sub New(Up As ValueAdjustmentInvoke, Down As ValueAdjustmentInvoke, ValueChanged As ValueAdjustmentInvoke)
+    Sub New(Up As AdjustInvoke, Down As AdjustInvoke, ValueChanged As AdjustInvoke)
 
         ' This call is required by the designer.
         InitializeComponent()
@@ -17,7 +17,7 @@
 
     End Sub
 
-    Sub New(Up As ValueAdjustmentInvoke, Down As ValueAdjustmentInvoke)
+    Sub New(Up As AdjustInvoke, Down As AdjustInvoke)
 
         ' This call is required by the designer.
         InitializeComponent()
@@ -28,7 +28,7 @@
         Me.Down = Down
     End Sub
 
-    Sub New(ValueChanged As ValueAdjustmentInvoke)
+    Sub New(ValueChanged As AdjustInvoke)
 
         ' This call is required by the designer.
         InitializeComponent()
@@ -86,4 +86,4 @@ End Class
 ''' 
 ''' </summary>
 ''' <param name="value">1 - 100</param>
-Public Delegate Sub ValueAdjustmentInvoke(value As Integer)
+Public Delegate Sub AdjustInvoke(value As Integer)
