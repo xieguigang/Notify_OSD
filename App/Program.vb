@@ -14,7 +14,7 @@ Public Module Program
     ''' </summary>
     ''' <returns></returns>
     Public Function Main() As Integer
-        Return GetType(Program).RunCLI(App.CommandLine)
+        Return GetType(CLI).RunCLI(App.CommandLine)
     End Function
 
     ''' <summary>

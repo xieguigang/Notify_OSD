@@ -25,13 +25,15 @@ Module DaemonProcess
         Call _osdNotifier.SendMessage(msg)
     End Sub
 
-    <ExportAPI("-Stop")>
+    <ExportAPI("-Stop", Info:="Stops this notify-osd services instance")>
     Public Function ExitThread() As Integer
         _continuesThread = False
         Return 0
     End Function
 
-    <ExportAPI("-SendMessage", Usage:="-SendMessage -title <title> -message <message> -icon <icon_url>")>
+    <ExportAPI("-SendMessage",
+               Info:="Displays a user message.",
+               Usage:="-SendMessage -title <title> -message <message> -icon <icon_url>")>
     Public Function SendMessage(args As CommandLine) As Integer
         If args Is Nothing Then
             Return -1
