@@ -41,7 +41,7 @@
 
     Protected Overrides Sub AfterMessageDrawing()
         Me._resWidth = Me._resNormal.Width
-        Me._OSD_MSG.BubbleBehavior = OsdNotifier.BubbleBehaviorTypes.ValueAdjustments
+        Me._OSD_MSG.BubbleBehavior = BubbleBehaviorTypes.ValueAdjustments
         Me.ProcessingBar.StopRollAnimation()
         Me.ProcessingBar.InvokeAnimation()
     End Sub
@@ -68,7 +68,7 @@
     End Sub
 
     Protected Overrides Function InternalBlur(res As Image) As Image
-        Return GDIGaussBlur.GaussBlur(res)
+        Return GaussBlur.GaussBlur(res)
     End Function
 
     Protected Overrides Sub MouseMoveEnterBlur(sender As Object, e As EventArgs)

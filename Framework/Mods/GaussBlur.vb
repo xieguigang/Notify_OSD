@@ -1,7 +1,7 @@
 ﻿Imports System.Runtime.InteropServices.Marshal
 Imports System.Drawing.Imaging
 
-Module GDIGaussBlur
+Module GaussBlur
 
     ''' <summary>
     ''' 对一幅图片进行快速模糊处理，函数由 [小鱼儿] 提供
@@ -12,9 +12,7 @@ Module GDIGaussBlur
     Public Function GaussBlur(imgValue As Bitmap) As Bitmap
         Dim iRow As Integer
         Dim iCol As Integer
-
         Dim oriWidth As Integer = imgValue.Width, oriHeight As Integer = imgValue.Height
-
         Dim img2 As Bitmap = imgValue.Clone
         Dim h As Integer = img2.Height
         Dim w As Integer = img2.Width - 1
@@ -32,8 +30,9 @@ Module GDIGaussBlur
         rgb2(1) = (CInt(0) + rgb(1) + rgb(4) + rgb(w + 1) + rgb(s + 4)) / 4
         rgb2(2) = (CInt(0) + rgb(2) + rgb(5) + rgb(s + 2) + rgb(s + 5)) / 4
 
+        Dim ends As Integer = oriWidth - 2
 
-        For iCol = 1 To oriWidth - 2
+        For iCol = 1 To ends
             rgb2(iCol * 3) = (CInt(0) +
                                         rgb((iCol - 1) * 3) +  '处理第一行第2个到倒数第2个像素
                                         rgb(iCol * 3) +
@@ -63,8 +62,9 @@ Module GDIGaussBlur
                                         rgb(w * 3 - 2 + s) + rgb(w * 3 + s - 1)) / 4
         rgb2(w * 3 + 2) = (CInt(0) + rgb(w * 3 - 1) + rgb(w * 3 + 2) +
                                         rgb(w * 3 - 1 + s) + rgb(w * 3 + s + 2)) / 4
+        ends = h - 2
 
-        For iRow = 1 To h - 2
+        For iRow = 1 To ends
 
             rgb2(iRow * s) = (CInt(0) + rgb((iRow - 1) * s) + rgb((iRow - 1) * s + 3) + '处理每行第一个像素
                                         rgb(iRow * s) + rgb(iRow * s + 3) +
@@ -126,7 +126,9 @@ Module GDIGaussBlur
         rgb2((h - 1) * s + 1) = (CInt(0) + rgb((h - 2) * s + 1) + rgb((h - 2) * s + 3 + 1) + rgb((h - 1) * s + 1) + rgb((h - 1) * s + 1)) / 4
         rgb2((h - 1) * s + 2) = (CInt(0) + rgb((h - 2) * s + 2) + rgb((h - 2) * s + 3 + 2) + rgb((h - 1) * s + 2) + rgb((h - 1) * s + 2)) / 4
 
-        For iCol = 1 To oriWidth - 2
+        ends = oriWidth - 2
+
+        For iCol = 1 To ends
             rgb2((h - 1) * s + iCol * 3) = (CInt(0) +
                                         rgb((h - 2) * s + (iCol - 1) * 3) +   '处理最后一行第2个到倒数第2个像素
                                         rgb((h - 2) * s + iCol * 3) +

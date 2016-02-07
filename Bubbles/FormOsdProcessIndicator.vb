@@ -23,7 +23,7 @@ Friend Class FormOsdProcessIndicator : Implements System.IDisposable
             If value >= 100 Then
                 value = 100
                 '进度条已经走完了，则让气泡消失
-                Me._OSD_MSG.BubbleBehavior = OsdNotifier.BubbleBehaviorTypes.AutoClose
+                Me._OSD_MSG.BubbleBehavior = BubbleBehaviorTypes.AutoClose
 
             Else
                 Me._ProcessingBar.PercentageValue = value
@@ -65,7 +65,7 @@ Friend Class FormOsdProcessIndicator : Implements System.IDisposable
 
     Protected Overrides Sub AfterMessageDrawing()
         Me._resWidth = Me._resNormal.Width
-        Me._OSD_MSG.BubbleBehavior = OsdNotifier.BubbleBehaviorTypes.ProcessIndicator
+        Me._OSD_MSG.BubbleBehavior = BubbleBehaviorTypes.ProcessIndicator
         Me._ProcessingBar.StartRollAnimation()
     End Sub
 
@@ -104,7 +104,7 @@ Friend Class FormOsdProcessIndicator : Implements System.IDisposable
     End Sub
 
     Protected Overridable Function InternalBlur(res As Image) As Image
-        Return GDIGaussBlur.GaussBlur(GaussBlur(GaussBlur(res)))
+        Return GaussBlur.GaussBlur(GaussBlur.GaussBlur(GaussBlur.GaussBlur(res)))
     End Function
 
     Dim _ProcNormalRenderer As Image, _procBlurRenderer As Image

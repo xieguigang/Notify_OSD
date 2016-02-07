@@ -5,91 +5,7 @@
 ''' </summary>
 Public Class OsdNotifier : Implements System.IDisposable
 
-    ''' <summary>
-    ''' The message data will displayed on the osd bubble.
-    ''' </summary>
-    <Serializable> Public Class Message
-
-        ''' <summary>
-        ''' The title of the message.
-        ''' </summary>
-        ''' <returns></returns>
-        <Xml.Serialization.XmlAttribute> Public Property Title As String
-        <Xml.Serialization.XmlElement> Public Property Message As String
-        ''' <summary>
-        ''' The icon image file path.
-        ''' </summary>
-        ''' <returns></returns>
-        <Xml.Serialization.XmlElement> Public Property IconURL As String
-        ''' <summary>
-        ''' The format of the bubble sound is limited on *.wav
-        ''' </summary>
-        ''' <returns></returns>
-        <Xml.Serialization.XmlElement> Public Property SoundURL As String
-        ''' <summary>
-        ''' This handle indicated that when user click on the bubble what action will be run?
-        ''' </summary>
-        ''' <returns></returns>
-        <Xml.Serialization.XmlIgnore> Public Property CallbackHandle As Action
-        ''' <summary>
-        ''' The displaying behavior of the osd bubble on the screen.
-        ''' </summary>
-        ''' <returns></returns>
-        <Xml.Serialization.XmlElement> Public Property BubbleBehavior As BubbleBehaviorTypes
-
-        Public ReadOnly Property Icon As Image
-            Get
-                If String.IsNullOrEmpty(_IconURL) OrElse Not FileIO.FileSystem.FileExists(_IconURL) Then
-                    Return My.Resources.UBUNTU
-                Else
-                    Try
-                        Return LoadImage(_IconURL)
-                    Catch ex As Exception
-                        Call Console.WriteLine(ex.ToString)
-                        Call Debug.WriteLine(ex.ToString)
-                        Call Trace.WriteLine(ex.ToString)
-                        Return My.Resources.UBUNTU
-                    End Try
-                End If
-            End Get
-        End Property
-
-        Public Overrides Function ToString() As String
-            Return Message
-        End Function
-
-        Public Function Copy(OverridesHandle As Action) As Message
-            Return New Message With {
-                .CallbackHandle = OverridesHandle,
-                .Message = Message,
-                .IconURL = IconURL,
-                .Title = Title,
-                .BubbleBehavior = BubbleBehavior,
-                .SoundURL = SoundURL
-            }
-        End Function
-    End Class
-
-    Public Enum BubbleBehaviorTypes
-        ''' <summary>
-        ''' The message bubble will be closed automatically after a time period.
-        ''' </summary>
-        AutoClose
-        ''' <summary>
-        ''' The message bubble will not be closed until user click on it.
-        ''' </summary>
-        FreezUntileClick
-        ''' <summary>
-        ''' The message bubble will running as a process bar indicator, the bubble will automatically closed when the process value is 100.
-        ''' </summary>
-        ProcessIndicator
-        ''' <summary>
-        ''' When the user scrolling his mouse wheel on the bubble, then the action will be callback to adjust the value.
-        ''' </summary>
-        ValueAdjustments
-    End Enum
-
-    Dim _messageQueueList As Queue(Of OsdNotifier.Message) = New Queue(Of OsdNotifier.Message)
+    Dim _messageQueueList As Queue(Of Message) = New Queue(Of Message)
 
     Sub New()
         Call Microsoft.VisualBasic.Parallel.Run(AddressOf __sendMessageThread)
@@ -213,14 +129,14 @@ Public Class ProcessBarBubble
 
     Dim _InvokeThread As Threading.Thread
 
-    Public Sub ShowMessage(Percentage As Integer, MSG As OsdNotifier.Message)
+    Public Sub ShowMessage(Percentage As Integer, MSG As Message)
         Me._ProcBubble.Value = Percentage
         Me._ProcBubble.Message = MSG
     End Sub
 
     Public Sub ShowMessage(Percentage As Integer, MSG As String)
         Me._ProcBubble.Value = Percentage
-        Me._ProcBubble.Message = New OsdNotifier.Message With {.Message = MSG, .Title = Me._ProcBubble.Message.Title,
+        Me._ProcBubble.Message = New Message With {.Message = MSG, .Title = Me._ProcBubble.Message.Title,
             .BubbleBehavior = Me._ProcBubble.Message.BubbleBehavior,
             .CallbackHandle = Me._ProcBubble.Message.CallbackHandle,
             .IconURL = Me._ProcBubble.Message.IconURL,
@@ -236,7 +152,7 @@ Public Class ProcessBarBubble
 
     Dim _ProcBubble As FormOsdProcessIndicator
 
-    Sub New(MSG As OsdNotifier.Message, ScreenOffset As Point)
+    Sub New(MSG As Message, ScreenOffset As Point)
         Me._ProcBubble = New FormOsdProcessIndicator()
         Me._ProcBubble.ScreenOffSet = ScreenOffset
         Me._ProcBubble.Message = MSG
@@ -275,17 +191,17 @@ Public Class ValueAdjustments
 
 #Region "Constructors"
 
-    Sub New(MSG As OsdNotifier.Message, Up As ValueAdjustmentInvoke, Down As ValueAdjustmentInvoke, ValueChanged As ValueAdjustmentInvoke)
+    Sub New(MSG As Message, Up As ValueAdjustmentInvoke, Down As ValueAdjustmentInvoke, ValueChanged As ValueAdjustmentInvoke)
         Me._AdjustmentBar = New FormOsdValueAdjustments(Up, Down, ValueChanged)
         Me._AdjustmentBar.Message = MSG
     End Sub
 
-    Sub New(MSG As OsdNotifier.Message, Up As ValueAdjustmentInvoke, Down As ValueAdjustmentInvoke)
+    Sub New(MSG As Message, Up As ValueAdjustmentInvoke, Down As ValueAdjustmentInvoke)
         Me._AdjustmentBar = New FormOsdValueAdjustments(Up, Down)
         Me._AdjustmentBar.Message = MSG
     End Sub
 
-    Sub New(MSG As OsdNotifier.Message, ValueChanged As ValueAdjustmentInvoke)
+    Sub New(MSG As Message, ValueChanged As ValueAdjustmentInvoke)
         Me._AdjustmentBar = New FormOsdValueAdjustments(ValueChanged)
         Me._AdjustmentBar.Message = MSG
     End Sub

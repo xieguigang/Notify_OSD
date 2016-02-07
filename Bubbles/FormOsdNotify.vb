@@ -20,11 +20,11 @@ Friend Class FormOsdNotify
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Overridable Property Message As OsdNotifier.Message
+    Public Overridable Property Message As Message
         Get
             Return Me._OSD_MSG
         End Get
-        Set(value As OsdNotifier.Message)
+        Set(value As Message)
             Me._OSD_MSG = value
             Me.Text = value.Title
             Call InvokeDrawing()
@@ -34,7 +34,7 @@ Friend Class FormOsdNotify
     Protected Sub InvokeDrawing()
         _resNormal = MessageRender.DrawMessage(Me._OSD_MSG, Me.GetRenderer)
         _resHLBlur = _resNormal
-        _resHLBlur = GDIGaussBlur.GaussBlur(GaussBlur(GaussBlur(_resHLBlur)))
+        _resHLBlur = GaussBlur.GaussBlur(GaussBlur.GaussBlur(GaussBlur.GaussBlur(_resHLBlur)))
 
         '绘制边框
         _resNormal = MessageRender.DrawFrame(_resNormal)
@@ -63,7 +63,7 @@ Friend Class FormOsdNotify
         Return New MessageRender.MessageRender
     End Function
 
-    Protected _OSD_MSG As OsdNotifier.Message
+    Protected _OSD_MSG As Message
 
     Sub New(OsdNotifier As OsdNotifier)
         CheckForIllegalCrossThreadCalls = False
@@ -137,8 +137,8 @@ Friend Class FormOsdNotify
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles _TimerUnloadCount.Elapsed
         Call Debug.WriteLine(Me.Message.BubbleBehavior.ToString)
 
-        If Me.Message.BubbleBehavior = OsdNotifier.BubbleBehaviorTypes.FreezUntileClick OrElse
-            Me._OSD_MSG.BubbleBehavior = OsdNotifier.BubbleBehaviorTypes.ProcessIndicator Then    '必须要走到100才可以，所以到100之后修改Message里面的这个属性为AutoClose即可
+        If Me.Message.BubbleBehavior = BubbleBehaviorTypes.FreezUntileClick OrElse
+            Me._OSD_MSG.BubbleBehavior = BubbleBehaviorTypes.ProcessIndicator Then    '必须要走到100才可以，所以到100之后修改Message里面的这个属性为AutoClose即可
             _UnloadCount = 0
             Return
         End If
@@ -169,7 +169,7 @@ Friend Class FormOsdNotify
     Protected Overridable Sub BubbleClick(sender As Object, e As EventArgs) Handles PictureBox1.Click
         Dim Handle = ActionCallback
 
-        If Me._OSD_MSG.BubbleBehavior = OsdNotifier.BubbleBehaviorTypes.ProcessIndicator Then
+        If Me._OSD_MSG.BubbleBehavior = BubbleBehaviorTypes.ProcessIndicator Then
             '必须要走到100才可以
 
         End If

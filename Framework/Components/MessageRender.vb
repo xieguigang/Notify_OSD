@@ -37,7 +37,7 @@ Module MessageRender
     ''' <param name="MSG"></param>
     ''' <returns></returns>
     ''' <remarks>函数依靠字符串中含有多少个回车符来判断绘制的位置</remarks>
-    Public Function DrawMessage(MSG As OsdNotifier.Message, Renderer As MessageRender) As Image
+    Public Function DrawMessage(MSG As Message, Renderer As MessageRender) As Image
         Try
             Dim s_Title As String = If(String.IsNullOrEmpty(MSG.Title), Now.ToString, MSG.Title.Replace("\n", vbCrLf)),
                 strMessage As String = If(String.IsNullOrEmpty(MSG.Message), "", MSG.Message.Replace("\n", vbCrLf))

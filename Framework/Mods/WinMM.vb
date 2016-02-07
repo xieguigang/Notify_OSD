@@ -21,7 +21,11 @@ Public Module WinMM
     <ExportAPI("PlaySoundA")>
     Public Declare Function PlaySound Lib "winmm.dll" Alias "PlaySoundA" (lpszName As String, hModule As Integer, dwFlags As Integer) As Integer
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="FileName">*.wav file path.(API只能够播放wav文件)</param>
     Public Sub PlaySound(FileName As String)
-        Call PlaySound(FileName, 0, SND_FILENAME)
+        Call WinMM.PlaySound(FileName, 0, SND_FILENAME)
     End Sub
 End Module
