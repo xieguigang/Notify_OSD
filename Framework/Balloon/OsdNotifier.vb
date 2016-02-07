@@ -8,7 +8,7 @@ Public Class OsdNotifier : Implements System.IDisposable
     Dim _messageQueueList As Queue(Of Message) = New Queue(Of Message)
 
     Sub New()
-        Call Microsoft.VisualBasic.Parallel.Run(AddressOf __sendMessageThread)
+        Call Microsoft.VisualBasic.Parallel.RunTask(AddressOf __sendMessageThread)
     End Sub
 
     Private Sub __sendMessageThread()
