@@ -1,7 +1,35 @@
 ﻿Imports System.Runtime.InteropServices.Marshal
 Imports System.Drawing.Imaging
+Imports Microsoft.VisualBasic.Marshal
 
 Module GaussBlur
+
+    Public Function TestPointer(w As Integer, h As Integer, GreyImage As Byte(,)) As Bitmap
+        Dim Image As New Bitmap(w, h)
+        Dim bitmapData1 As BitmapData = Image.LockBits(New Rectangle(0, 0, w, h), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb)
+
+        Using p As IntPtr(Of Byte) = bitmapData1.Scan0.MarshalAs(Of Byte)(1024)
+            Dim imagePointer1 = p
+
+            For i As Integer = 0 To bitmapData1.Height - 1
+                For j As Integer = 0 To bitmapData1.Width - 1
+
+                    '   // write the logic implementation here
+                    imagePointer1(0) = GreyImage(j, i)
+                    imagePointer1(1) = GreyImage(j, i)
+                    imagePointer1(2) = GreyImage(j, i)
+                    imagePointer1(3) = CByte(255)
+                    '  //4 bytes per pixel
+                    imagePointer1 += 4
+                Next  ' //end for j
+                '     //4 bytes per pixel
+                imagePointer1 += (bitmapData1.Stride - (bitmapData1.Width * 4))
+            Next
+        End Using
+
+        Image.UnlockBits(bitmapData1)
+        Return Image ' // col;
+    End Function
 
     ''' <summary>
     ''' 对一幅图片进行快速模糊处理，函数由 [小鱼儿] 提供
@@ -19,7 +47,7 @@ Module GaussBlur
         Dim bd As BitmapData = img2.LockBits(New Rectangle(0, 0, oriWidth, oriHeight), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb)
         Dim s As Integer = bd.Stride
 
-        Dim ptr As IntPtr = bd.Scan0
+        Dim ptr As System.IntPtr = bd.Scan0
         Dim rgb(s * h - 1) As Byte
         Dim rgb2(s * h - 1) As Byte
 
