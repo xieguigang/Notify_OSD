@@ -2,13 +2,13 @@
 Imports System.Drawing.Imaging
 Imports Microsoft.VisualBasic.Marshal
 
-Module GaussBlur
+Public Module GaussBlur
 
     Public Function TestPointer(w As Integer, h As Integer, GreyImage As Byte(,)) As Bitmap
         Dim Image As New Bitmap(w, h)
         Dim bitmapData1 As BitmapData = Image.LockBits(New Rectangle(0, 0, w, h), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb)
 
-        Using p As IntPtr(Of Byte) = bitmapData1.Scan0.MarshalAs(Of Byte)(1024)
+        Using p As IntPtr(Of Byte) = bitmapData1.Scan0.MarshalAs(Of Byte)(bitmapData1.Stride * h - 1)
             Dim imagePointer1 = p
 
             For i As Integer = 0 To bitmapData1.Height - 1

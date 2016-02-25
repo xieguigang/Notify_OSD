@@ -1,6 +1,13 @@
-﻿Public Module Program
+﻿Imports NotifyOsd.GaussBlur
+
+Public Module Program
 
     Sub Main()
+
+        Dim gg As Byte(,) = New Byte(500, 500) {}
+        Dim iii = TestPointer(100, 100, gg)
+
+
         Dim msg As New NotifyOsd.Message With {
             .Title = "进度条气泡测试(示例代码)",
             .Message = "\n  \n 
