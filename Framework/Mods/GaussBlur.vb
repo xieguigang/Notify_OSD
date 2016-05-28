@@ -1,6 +1,6 @@
 ﻿Imports System.Runtime.InteropServices.Marshal
 Imports System.Drawing.Imaging
-Imports Microsoft.VisualBasic.Marshal
+Imports Microsoft.VisualBasic.Emit.Marshal
 
 Public Module GaussBlur
 

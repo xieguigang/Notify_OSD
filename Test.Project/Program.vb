@@ -5,7 +5,7 @@ Public Module Program
     Sub Main()
 
         Dim gg As Byte(,) = New Byte(500, 500) {}
-        Dim iii = TestPointer(100, 100, gg)
+        '  Dim iii = TestPointer(100, 100, gg)
 
 
         Dim msg As New NotifyOsd.Message With {

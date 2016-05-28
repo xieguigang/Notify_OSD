@@ -1,4 +1,6 @@
-﻿''' <summary>
+﻿Imports Microsoft.VisualBasic.Imaging
+
+''' <summary>
 ''' The message data will displayed on the osd bubble.
 ''' </summary>
 <Serializable> Public Class Message

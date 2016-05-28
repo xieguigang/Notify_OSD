@@ -1,4 +1,5 @@
-﻿Imports NotifyOsd
+﻿Imports Microsoft.VisualBasic.Imaging
+Imports NotifyOsd
 Imports NotifyOsd.BubblesDisplay
 Imports NotifyOsd.Framework.Balloon
 

@@ -1,4 +1,6 @@
-﻿Namespace BubblesDisplay
+﻿Imports Microsoft.VisualBasic.Imaging
+
+Namespace BubblesDisplay
 
     Public Class ProcessingBar : Implements System.IDisposable
 
