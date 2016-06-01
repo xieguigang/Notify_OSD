@@ -89,8 +89,8 @@ Friend Class FormOsdProgressIndicator : Implements System.IDisposable
 
         Me._resWidth = Gr.Width
 
-        Call Gr.Gr_Device.DrawImage(resNormal, New Point)
-        Call Gr.Gr_Device.DrawImage(procBarRender, New Point(15, Height - procBarRender.Height - 18))
+        Call Gr.Graphics.DrawImage(resNormal, New Point)
+        Call Gr.Graphics.DrawImage(procBarRender, New Point(15, Height - procBarRender.Height - 18))
 
         Me._ProcNormalRenderer = Gr.ImageResource
         Me._procBlurRenderer = InternalBlur(_ProcNormalRenderer)
