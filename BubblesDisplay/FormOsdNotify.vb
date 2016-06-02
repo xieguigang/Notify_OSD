@@ -91,6 +91,8 @@ Friend Class FormOsdNotify
         _animationInvoker.Enabled = True
         _timerUnloadCount.Interval = 500
         _timerUnloadCount.Enabled = True
+
+        Me.InvokeLostFocus(Me, Nothing)
     End Sub
 
     Protected Overridable Sub MouseMoveEnterBlur(sender As Object, e As EventArgs) Handles PictureBox1.MouseEnter

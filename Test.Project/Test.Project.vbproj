@@ -172,7 +172,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Notify_OSD.vbproj">
       <Project>{95734d4d-9603-464a-b67d-a5bc97150d90}</Project>
-      <Name>Services.NotifyOSD</Name>
+      <Name>Notify_OSD</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

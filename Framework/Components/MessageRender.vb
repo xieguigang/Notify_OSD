@@ -1,5 +1,6 @@
 ﻿Imports System.Text
 Imports Microsoft.VisualBasic.Serialization
+Imports Microsoft.VisualBasic.Imaging
 
 Module MessageRender
 
@@ -53,6 +54,7 @@ Module MessageRender
     End Function
 
     ReadOnly _textMeasures As Graphics = Graphics.FromImage(My.Resources.UBUNTU)
+    ReadOnly _minSize As New Size(352, 73)
 
     Private Function __drawInner(msg As Message, params As RenderParameters) As Image
         Dim title As String = If(String.IsNullOrEmpty(msg.Title), Now.ToString, msg.Title.Replace("\n", vbCrLf)),
@@ -65,21 +67,26 @@ Module MessageRender
             .Y = margins.Height * 2 + 5 + titleSize.Height + msgSize.Height + 25
         }
 
-        If grSize.Y < 80 Then
-            grSize.Y = 80
+        If grSize.Y < 76 Then
+            grSize = New Point(grSize.X, 76)
+        End If
+        If grSize.X < 352 Then
+            grSize = New Point(352, grSize.Y)
         End If
 
-        Dim res As Bitmap = New Bitmap(grSize.X, grSize.Y + params.YDelta)
-        Using grDraw As Graphics = Graphics.FromImage(res)
-            grDraw.CompositingQuality = Drawing2D.CompositingQuality.HighQuality
-            '绘制表面纹理
-            Call grDraw.FillRegion(Brushes.Black, New Region(New Rectangle(New Point, grSize)))
-            '绘制消息内容
-            grDraw.DrawImage(msg.Icon, 15, 15, params.IconSize, params.IconSize)
-            grDraw.DrawString(title, params.TitleFont, Brushes.WhiteSmoke, New Point(78, 15))
-            grDraw.DrawString(message, params.MessageFont, Brushes.White, New Point(78, 5 + 15 + titleSize.Height))
+        Using grDraw As GDIPlusDeviceHandle =
+            New Size(grSize.X, grSize.Y + params.YDelta) _
+            .CreateGDIDevice(Color.Transparent)
 
-            Return res
+            grDraw.Graphics.CompositingQuality = Drawing2D.CompositingQuality.HighQuality
+            '绘制表面纹理
+            Call grDraw.Graphics.FillRegion(Brushes.Black, New Region(New Rectangle(New Point, grSize)))
+            '绘制消息内容
+            grDraw.Graphics.DrawImage(msg.Icon, 15, 15, params.IconSize, params.IconSize)
+            grDraw.Graphics.DrawString(title, params.TitleFont, Brushes.WhiteSmoke, New Point(78, 15))
+            grDraw.Graphics.DrawString(message, params.MessageFont, Brushes.White, New Point(78, 5 + 15 + titleSize.Height))
+
+            Return grDraw.ImageResource
         End Using
     End Function
 End Module

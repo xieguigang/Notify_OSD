@@ -3,10 +3,12 @@
 Public Module Program
 
     Sub Main()
+        Call Threading.Thread.Sleep(2 * 1000)
+        Call New NotifyOsd.Framework.Balloon.OsdNotifier().SendMessage("test ok!", "test ok!", "", Nothing)
 
         Dim gg As Byte(,) = New Byte(500, 500) {}
         '  Dim iii = TestPointer(100, 100, gg)
-
+        Pause()
 
         Dim msg As New NotifyOsd.Message With {
             .Title = "进度条气泡测试(示例代码)",
@@ -47,7 +49,7 @@ valueAdjust.PercentageValue = 50
 
 
         Call Console.ReadLine()
-        Call New NotifyOsd.Framework.Balloon.OsdNotifier().SendMessage("test ok!", "test ok!", "", Nothing)
+
     End Sub
 
     Private Sub adjustInvoke(x As Integer)
