@@ -1,6 +1,5 @@
-﻿Imports System.Text
-Imports Microsoft.VisualBasic.Serialization
-Imports Microsoft.VisualBasic.Imaging
+﻿Imports Microsoft.VisualBasic.Imaging
+Imports Microsoft.VisualBasic.Serialization.JSON
 
 Module MessageRender
 
