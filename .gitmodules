@@ -1,0 +1,6 @@
+[submodule "modules/base"]
+	path = modules/base
+	url = https://github.com/xieguigang/sciBASIC-lang-core.git
+[submodule "modules/http"]
+	path = modules/http
+	url = https://github.com/xieguigang/SMRUCC.WebCloud.git
