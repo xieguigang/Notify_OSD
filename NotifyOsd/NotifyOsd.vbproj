@@ -46,6 +46,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -64,6 +65,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BubbleBehaviors.vb" />
+    <Compile Include="MessageRender.vb" />
+    <Compile Include="RenderParameters.vb" />
+    <Compile Include="Message.vb" />
     <Compile Include="Service.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -109,6 +114,33 @@
       <Project>{05db9b3d-3456-4005-8e95-7d854cdc6c69}</Project>
       <Name>Flute</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NotificationMainPanel_bottom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NotificationMainPanel_bottom_LEFT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NotificationMainPanel_bottom_Right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NotificationMainPanel_top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NotificationMainPanel_top_LEFT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NotificationMainPanel_top_RIGHT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PanelFrame.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProcessingbarRes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UBUNTU.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
