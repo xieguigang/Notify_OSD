@@ -7,9 +7,9 @@ Namespace Framework.Balloon
     ''' <summary>
     ''' 编程的API接口
     ''' </summary>
-    Public Class OsdNotifier : Implements System.IDisposable
+    Public Class OsdNotifier : Implements IDisposable
 
-        Dim messageQueue As New Queue(Of Message)
+        Dim messageQueue As New Queue(Of (message As Message, callback As Action))
 
         Sub New()
             Call RunTask(AddressOf showMessageLoop)
@@ -26,16 +26,16 @@ Namespace Framework.Balloon
         End Sub
 
         Private Sub doShowMessage()
-            Dim msg As Message = messageQueue.Dequeue
-            Dim Notifier As New FormOsdNotify(Me) With {
-                .Message = msg,
-                .ActionCallback = msg.CallbackHandle
+            Dim msg = messageQueue.Dequeue
+            Dim notifier As New FormOsdNotify(Me) With {
+                .Message = msg.message,
+                .ActionCallback = msg.callback
             }
-            If msg.SoundURL.FileExists Then
-                Call RunTask(Sub() Call WinMM.PlaySound(msg.SoundURL))
+            If msg.message.sound.FileExists Then
+                Call RunTask(Sub() Call WinMM.PlaySound(msg.message.sound))
             End If
 
-            Call Notifier.ShowDialog()
+            Call notifier.ShowDialog()
         End Sub
 
         ''' <summary>
@@ -44,23 +44,22 @@ Namespace Framework.Balloon
         ''' <param name="Msg"></param>
         ''' <param name="callbacks">假若用户点击了气泡并且合格参数不为空值的话，则会发生一个回调事件</param>
         Public Sub SendMessage(Msg As Message, Optional callbacks As Action = Nothing)
-            Call messageQueue.Enqueue(Msg.Copy(OverridesHandle:=callbacks))
+            Call messageQueue.Enqueue((Msg, callbacks))
         End Sub
 
         Public Sub SendMessage(title As String, message As String, icon As String,
-                               callbacks As Action,
+                               Optional callbacks As Action = Nothing,
                                Optional Sound As String = "",
                                Optional Behavior As BubbleBehaviors = BubbleBehaviors.AutoClose)
 
             Dim Msg As New Message With {
-                .SoundURL = Sound,
+                .sound = Sound,
                 .title = title,
-                .Message = message,
-                .IconURL = icon,
-                .CallbackHandle = callbacks,
-                .BubbleBehavior = Behavior
+                .content = message,
+                .icon = icon,
+                .behaviors = Behavior
             }
-            Call messageQueue.Enqueue(Msg)
+            Call messageQueue.Enqueue((Msg, callbacks))
         End Sub
 
         Public Sub SendMessage(Title As String, Message As String, Icon As Image, CallbackHandle As Action,
@@ -69,14 +68,13 @@ Namespace Framework.Balloon
             Dim iconUrl As String = FileIO.FileSystem.GetTempFileName
             Call Icon.Save(iconUrl)
             Dim Msg As New Message With {
-                .SoundURL = Sound,
+                .sound = Sound,
                 .title = Title,
-                .Message = Message,
-                .IconURL = iconUrl,
-                .CallbackHandle = CallbackHandle,
-                .BubbleBehavior = Behavior
+                .content = Message,
+                .icon = iconUrl,
+                .behaviors = Behavior
             }
-            Call messageQueue.Enqueue(Msg)
+            Call messageQueue.Enqueue((Msg, CallbackHandle))
         End Sub
 
 #Region "IDisposable Support"
