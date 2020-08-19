@@ -66,13 +66,13 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BubbleBehaviors.vb" />
+    <Compile Include="Device\BubbleBehaviors.vb" />
     <Compile Include="Device\FormOsdNotify.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MessageRender.vb" />
+    <Compile Include="Render\MessageRender.vb" />
     <Compile Include="MessageQueue.vb" />
-    <Compile Include="RenderParameters.vb" />
+    <Compile Include="Render\RenderParameters.vb" />
     <Compile Include="Message.vb" />
     <Compile Include="Service.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -150,8 +150,6 @@
   <ItemGroup>
     <None Include="Resources\UBUNTU.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Render\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
