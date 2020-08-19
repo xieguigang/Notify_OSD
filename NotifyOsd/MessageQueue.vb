@@ -55,7 +55,7 @@ Namespace Framework.Balloon
             Dim Msg As New Message With {
                 .sound = Sound,
                 .title = title,
-                .content = message,
+                .message = message,
                 .icon = icon,
                 .behaviors = Behavior
             }
@@ -70,7 +70,7 @@ Namespace Framework.Balloon
             Dim Msg As New Message With {
                 .sound = Sound,
                 .title = Title,
-                .content = Message,
+                .message = Message,
                 .icon = iconUrl,
                 .behaviors = Behavior
             }

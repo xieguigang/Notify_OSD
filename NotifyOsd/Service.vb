@@ -24,7 +24,7 @@ Public Class Service : Inherits HttpServer
                 Dim request As New HttpPOSTRequest(p, inputData)
                 Dim message As New Message With {
                     .behaviors = [Enum].Parse(GetType(BubbleBehaviors), request("behaviors")),
-                    .content = request("content"),
+                    .message = request("message"),
                     .icon = request("icon"),
                     .sound = request("sound"),
                     .title = request("title")

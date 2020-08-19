@@ -57,7 +57,7 @@ Module MessageRender
 
     Private Function drawMessageInternal(msg As Message, params As RenderParameters) As Image
         Dim title As String = If(String.IsNullOrEmpty(msg.title), Now.ToString, msg.title.Replace("\n", vbCrLf))
-        Dim message As String = If(String.IsNullOrEmpty(msg.content), "", msg.content.Replace("\n", vbCrLf))
+        Dim message As String = If(String.IsNullOrEmpty(msg.message), "", msg.message.Replace("\n", vbCrLf))
         Dim titleSize As SizeF = _textMeasures.MeasureString(title, params.TitleFont)
         Dim msgSize As SizeF = _textMeasures.MeasureString(message, params.MessageFont)
         Dim margins As New Size(15, 5)

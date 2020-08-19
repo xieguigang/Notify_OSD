@@ -5,7 +5,7 @@ Imports Microsoft.VisualBasic.Net.Http
 Public Class Message
 
     Public Property title As String
-    Public Property content As String
+    Public Property message As String
     Public Property icon As String
     Public Property sound As String
     Public Property behaviors As BubbleBehaviors
