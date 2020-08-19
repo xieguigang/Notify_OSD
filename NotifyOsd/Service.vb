@@ -3,8 +3,8 @@ Imports Flute.Http.Core
 
 Public Class Service : Inherits HttpServer
 
-    Public Sub New(port As Integer, Optional threads As Integer = -1)
-        MyBase.New(port, threads)
+    Public Sub New(port As Integer)
+        MyBase.New(port, 2)
     End Sub
 
     Public Overrides Sub handleGETRequest(p As HttpProcessor)
@@ -12,7 +12,15 @@ Public Class Service : Inherits HttpServer
     End Sub
 
     Public Overrides Sub handlePOSTRequest(p As HttpProcessor, inputData As String)
+        Select Case LCase(p.http_url)
+            Case "/systemctl=stop"
+                Call p.openResponseStream.WriteLine("notify-osd services has been shutdown!")
+                Call Shutdown()
+            Case "/systemctl=send_message"
 
+            Case Else
+                Call p.openResponseStream.WriteError(405, "invalid request!")
+        End Select
     End Sub
 
     Public Overrides Sub handleOtherMethod(p As HttpProcessor)
