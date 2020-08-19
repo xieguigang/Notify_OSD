@@ -1,4 +1,49 @@
 <script src="https://cdn.biodeep.cn/vendor/jquery.min.js"></script>
-<script>$.post("http://127.0.0.1:3322/systemctl=stop",{},function(data) {$("#result").html(data)});</script>
+<!-- <script>$.post("http://127.0.0.1:3322/systemctl=stop",{},function(data) {$("#result").html(data)});</script> -->
 
 <div id="result"></div>
+
+<script>
+function getDataUrl(img) {
+   // Create canvas
+   const canvas = document.createElement('canvas');
+   const ctx = canvas.getContext('2d');
+   // Set width and height
+   canvas.width = img.width;
+   canvas.height = img.height;
+   // Draw the image
+   ctx.drawImage(img, 0, 0);
+   return canvas.toDataURL('image/png');
+}
+// Select the image
+const img =  new Image(); // document.querySelector('#icon');
+
+img.addEventListener('load', function (event) {
+   const dataUrl = getDataUrl(event.currentTarget);
+   console.log(dataUrl);
+   const message = {
+	   title: "test message",
+	   content: "message show",
+	   icon: dataUrl,
+	   sound: null,
+	   behaviors: "AutoClose" 
+   };
+   
+   jQuery.ajax(
+{
+url : "http://127.0.0.1:3322/systemctl=send_message",
+type: 'POST',
+dataType : "json",
+data: message,
+success:function(data) { $("#result").html(data); },
+error: function() {alert(data); }
+}
+);
+  
+});
+
+img.crossOrigin = 'anonymous';
+img.origin = 'anonymous';
+img.src = 'https://cdn.biodeep.cn/images/autofit.png';
+
+</script>
