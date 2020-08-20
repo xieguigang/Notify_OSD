@@ -1,7 +1,7 @@
 ﻿Imports Microsoft.VisualBasic.CommandLine
 Imports Microsoft.VisualBasic.CommandLine.Reflection
+Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Net.Http
-Imports Microsoft.VisualBasic.Serialization.JSON
 Imports NotifyOsd
 
 Module Program
@@ -16,7 +16,13 @@ Module Program
         Dim port As Integer = args("/port") Or 3322
         Dim services As New NotifyOsd.Service(port)
 
-        Return services.Run
+        If 0 <> services.Run Then
+            Call MessageBox.Show(App.GetLastError.ToString, "Notify-osd background services", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Call services.Shutdown()
+            Call App.Exit(500)
+        Else
+            Return 0
+        End If
     End Function
 
     <ExportAPI("/stop")>
@@ -39,7 +45,7 @@ Module Program
         Dim icon$ = args <= "/icon"
         Dim port As Integer = args("/port") Or 3322
 
-        icon = New DataURI(icon).ToString
+        icon = New DataURI(icon.LoadImage).ToString
 
         With New MultipartForm()
             Call .Add(NameOf(NotifyOsd.Message.behaviors), BubbleBehaviors.AutoClose.ToString)
